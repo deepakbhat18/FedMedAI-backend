@@ -486,15 +486,14 @@ src/main/java/com/fedlearn/medical/
 
 ---
 
-## 📄 License
-
-MIT License © 2024 Deepak Bhat
+## 📜 License
+This project is licensed under the MIT License.
 
 ---
 
 <div align="center">
 
-**Built with ❤️ for Privacy-Preserving Medical AI**
+**Built Privacy-Preserving Medical AI**
 
 ⭐ Star this repo if you found it helpful!
 
