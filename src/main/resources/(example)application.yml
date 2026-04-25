@@ -1,0 +1,98 @@
+#══════════════════════════════════════════════════════
+# FL Medical System - Spring Boot Configuration
+# ══════════════════════════════════════════════════════
+#change file name to application.yml
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: federated-learning-medical
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fedlearn_medical}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+    time-zone: UTC
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: false
+    test-connection: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:}
+    expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+
+  ml-service:
+    base-url: ${ML_SERVICE_URL:http://localhost:8000}
+
+  email:
+    from: ${MAIL_USERNAME:}
+    from-name: ${MAIL_FROM_NAME:FL Medical System}
+
+  scheduler:
+    enabled: ${SCHEDULER_ENABLED:true}
+    cron: "${SCHEDULER_CRON:0 0 2 * * MON}"
+    epochs: ${SCHEDULER_EPOCHS:5}
+    learning-rate: ${SCHEDULER_LR:0.01}
+    batch-size: ${SCHEDULER_BATCH:32}
+    engine: ${SCHEDULER_ENGINE:custom}
+    num-rounds: ${SCHEDULER_ROUNDS:3}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    try-it-out-enabled: true
+    disable-swagger-default-url: false
+
+logging:
+  level:
+    com.fedlearn: DEBUG
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/fedlearn-medical.log
