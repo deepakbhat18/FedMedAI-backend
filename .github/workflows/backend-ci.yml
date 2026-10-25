@@ -1,0 +1,28 @@
+name: Java Backend CI/CD Pipeline
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  build-and-verify:
+    name: Build, Unit Test & Docker Image Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+      - name: Set up JDK 17 (Eclipse Temurin)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Compile and Run Unit Tests
+        run: ./mvnw clean test -B
+        working-directory: ./
+      - name: Build Production Package
+        run: ./mvnw package -DskipTests -B
+        working-directory: ./
+      - name: Build Docker Container Image
+        run: docker build -t fl-medical-backend:${{ github.sha }} .
+        working-directory: ./

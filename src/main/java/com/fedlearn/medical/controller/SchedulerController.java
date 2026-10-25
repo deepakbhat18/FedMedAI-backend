@@ -1,3 +1,4 @@
+
 package com.fedlearn.medical.controller;
 
 import com.fedlearn.medical.dto.response.ApiResponse;
@@ -57,7 +58,6 @@ public class SchedulerController {
         try {
             Map<String, Object> status = schedulerService.getStatus();
 
-
             Map<String, Object> history = new HashMap<>();
             history.put("runHistory",
                     status.getOrDefault("runHistory",
@@ -80,7 +80,6 @@ public class SchedulerController {
                     "Scheduler history retrieved", history));
 
         } catch (Exception e) {
-
             Map<String, Object> emptyHistory = new HashMap<>();
             emptyHistory.put("runHistory",    new java.util.ArrayList<>());
             emptyHistory.put("totalRuns",     0);

@@ -1,0 +1,117 @@
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: federated-learning-medical
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fedlearn_medical}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:drb1234}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${HIKARI_MAX_POOL_SIZE:20}
+      minimum-idle: ${HIKARI_MIN_IDLE:5}
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      connection-timeout: 30000
+      leak-detection-threshold: 2000
+
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+
+  jpa:
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
+    show-sql: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:your-gmail@gmail.com}
+    password: ${SMTP_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    mail:
+      enabled: false
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      mlServiceCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  retry:
+    instances:
+      mlServiceRetry:
+        maxAttempts: 3
+        waitDuration: 2s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+  timelimiter:
+    instances:
+      mlServiceTimeLimiter:
+        timeoutDuration: 60s
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970337336763979244226452948404D6351655468576D5A7134743777217A25432A46}
+    expiration-ms: ${JWT_EXPIRATION_MS:900000}
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+  ml-service:
+    base-url: ${ML_SERVICE_URL:http://localhost:8000}
+  email:
+    from: ${EMAIL_FROM:noreply@fedlearn-medical.com}
+    from-name: FL Medical System Security
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    try-it-out-enabled: true
+
+logging:
+  level:
+    com.fedlearn.medical: INFO
+    org.springframework.security: WARN

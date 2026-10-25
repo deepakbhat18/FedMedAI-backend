@@ -1,5 +1,6 @@
 package com.fedlearn.medical.dto.request;
 
+import com.fedlearn.medical.security.validation.ValidPassword;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 100, message = "Password must be 6-100 characters")
+    @ValidPassword
     private String password;
 
     @NotBlank(message = "Full name is required")

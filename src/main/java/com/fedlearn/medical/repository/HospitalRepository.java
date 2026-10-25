@@ -1,3 +1,4 @@
+
 package com.fedlearn.medical.repository;
 
 import com.fedlearn.medical.entity.Hospital;
@@ -15,6 +16,9 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
     boolean existsByCode(String code);
     List<Hospital> findByStatus(HospitalStatus status);
     Optional<Hospital> findByAdminUserId(Long adminUserId);
+
+    @Query("SELECT h FROM Hospital h WHERE h.adminUser.username = :username")
+    Optional<Hospital> findByAdminUserUsername(String username);
 
     @Query("SELECT h FROM Hospital h WHERE h.adminUser.id = :userId")
     Optional<Hospital> findByAdminUser(Long userId);

@@ -17,16 +17,13 @@ public class RiskTimelineResponse {
     private String patientCode;
     private String hospitalName;
 
-    // Option C: Summary view (avg risk per date)
     private List<TimelinePoint> summary;
 
-    // Option C: Detailed view (per disease per date)
     private List<DetailedTimelinePoint> detailed;
 
-    // Stats
     private Integer totalPredictions;
     private Double currentRiskScore;
-    private String riskTrend; // IMPROVING, WORSENING, STABLE
+    private String riskTrend;
     private LocalDateTime firstPrediction;
     private LocalDateTime lastPrediction;
 

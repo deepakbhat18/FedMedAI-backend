@@ -1,0 +1,17 @@
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS version BIGINT DEFAULT 0;
+ALTER TABLE hospitals ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT FALSE;
+ALTER TABLE hospitals ADD COLUMN IF NOT EXISTS version BIGINT DEFAULT 0;
+ALTER TABLE patients ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN DEFAULT FALSE;
+ALTER TABLE patients ADD COLUMN IF NOT EXISTS version BIGINT DEFAULT 0;
+ALTER TABLE predictions ADD COLUMN IF NOT EXISTS version BIGINT DEFAULT 0;
+CREATE INDEX IF NOT EXISTS idx_patients_hospital_id ON patients(hospital_id);
+CREATE INDEX IF NOT EXISTS idx_patients_patient_code ON patients(patient_code);
+CREATE INDEX IF NOT EXISTS idx_patients_created_at ON patients(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_patients_hospital_deleted ON patients(hospital_id, is_deleted);
+CREATE INDEX IF NOT EXISTS idx_predictions_patient_created ON predictions(patient_id, created_at ASC);
+CREATE INDEX IF NOT EXISTS idx_predictions_hospital_created ON predictions(hospital_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_predictions_model_version ON predictions(model_version_id);
+CREATE INDEX IF NOT EXISTS idx_training_logs_round_hospital ON training_logs(training_round, hospital_id);
+CREATE INDEX IF NOT EXISTS idx_model_versions_active_round ON model_versions(is_active, training_round DESC);
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_revoked ON refresh_tokens(user_id, revoked);

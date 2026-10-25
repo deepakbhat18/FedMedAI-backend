@@ -39,7 +39,6 @@ public class DataSeeder implements CommandLineRunner {
 
         logger.info("=== SEEDING INITIAL DATA ===");
 
-        // 1. Create Admin User
         User admin = User.builder()
                 .username("admin")
                 .email("admin@fedlearn.com")
@@ -51,7 +50,6 @@ public class DataSeeder implements CommandLineRunner {
         admin = userRepository.save(admin);
         logger.info("Created admin user: admin/admin123");
 
-        // 2. Create Hospital Admin Users
         User hospitalAdmin1 = User.builder()
                 .username("hospital1_admin")
                 .email("admin@hospital1.com")
@@ -84,7 +82,6 @@ public class DataSeeder implements CommandLineRunner {
 
         logger.info("Created 3 hospital admin users");
 
-        // 3. Create Hospitals
         Hospital hospital1 = Hospital.builder()
                 .name("City General Hospital")
                 .code("CGH-001")
@@ -120,14 +117,12 @@ public class DataSeeder implements CommandLineRunner {
 
         logger.info("Created 3 hospitals");
 
-        // 4. Create Sample Patients for each hospital
         Random random = new Random(42);
         int patientCount = 0;
 
         Hospital[] hospitals = {hospital1, hospital2, hospital3};
         for (Hospital hospital : hospitals) {
             for (int i = 1; i <= 20; i++) {
-                // Generate realistic heart disease features
                 int age = 30 + random.nextInt(45);
                 int sex = random.nextInt(2);
                 double bp = 100 + random.nextInt(80);
@@ -139,7 +134,6 @@ public class DataSeeder implements CommandLineRunner {
                 int diabetes = random.nextInt(2);
                 int familyHistory = random.nextInt(2);
 
-                // Simple rule for generating labels
                 double riskScore = 0;
                 if (bp > 140) riskScore += 0.2;
                 if (cholesterol > 240) riskScore += 0.2;

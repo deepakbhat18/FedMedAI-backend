@@ -40,7 +40,6 @@ public class ExportService {
         List<Patient> patients;
 
         if (hospitalId != null) {
-
             if (!hospitalRepository.existsById(hospitalId)) {
                 throw new ResourceNotFoundException("Hospital", "id", hospitalId);
             }
@@ -54,7 +53,6 @@ public class ExportService {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              PrintWriter writer = new PrintWriter(out)) {
 
-
             writer.println(
                     "ID,Patient Code,Hospital,Age,Gender," +
                             "Diagnosis,Actual Label,Email," +
@@ -64,7 +62,6 @@ public class ExportService {
                             "Albumin,Potassium,Sodium,Urea," +
                             "Created At"
             );
-
 
             for (Patient patient : patients) {
                 StringBuilder row = new StringBuilder();
@@ -77,8 +74,6 @@ public class ExportService {
                         ? patient.getGender().name() : "")).append(",");
                 row.append(escapeCsv(patient.getDiagnosis())).append(",");
                 row.append(escapeCsv(patient.getActualLabel())).append(",");
-
-
 
                 if (patient.getFeatures() != null) {
                     row.append(escapeCsv(getFeature(patient, "bloodPressure"))).append(",");
@@ -98,7 +93,6 @@ public class ExportService {
                     row.append(escapeCsv(getFeature(patient, "sodium"))).append(",");
                     row.append(escapeCsv(getFeature(patient, "urea"))).append(",");
                 } else {
-
                     row.append(",,,,,,,,,,,,,,,,");
                 }
 
@@ -137,12 +131,10 @@ public class ExportService {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
              PrintWriter writer = new PrintWriter(out)) {
 
-
             writer.println(
                     "ID,Patient Code,Hospital,Prediction,Prediction Label," +
                             "Confidence,Risk Level,Model Version,Created At"
             );
-
 
             for (Prediction prediction : predictions) {
                 StringBuilder row = new StringBuilder();
@@ -153,11 +145,9 @@ public class ExportService {
                 row.append(escapeCsv(prediction.getPrediction())).append(",");
                 row.append(escapeCsv(prediction.getPredictionLabel())).append(",");
 
-
                 Double confidence = prediction.getConfidence();
                 if (confidence != null) {
                     row.append(String.format("%.2f%%", confidence * 100)).append(",");
-
                     String riskLevel = getRiskLevel(confidence);
                     row.append(escapeCsv(riskLevel)).append(",");
                 } else {
@@ -200,6 +190,7 @@ public class ExportService {
         stats.put("exportFormats", List.of("CSV"));
         return stats;
     }
+
     private String getFeature(Patient patient, String key) {
         if (patient.getFeatures() == null) return "";
         Object value = patient.getFeatures().get(key);
@@ -209,7 +200,6 @@ public class ExportService {
     private String escapeCsv(Object value) {
         if (value == null) return "";
         String str = value.toString();
-
         if (str.contains(",") || str.contains("\"") || str.contains("\n")) {
             str = "\"" + str.replace("\"", "\"\"") + "\"";
         }

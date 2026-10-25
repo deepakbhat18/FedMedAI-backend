@@ -1,0 +1,1 @@
+ALTER TABLE model_versions ADD COLUMN IF NOT EXISTS weights_path VARCHAR(500);

@@ -1,51 +1,34 @@
-
+HELP.md
 target/
-*.class
-*.jar
-*.war
-*.ear
-*.log
-
-.mvn/
 .mvn/wrapper/maven-wrapper.jar
-target/
-build/
-!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-
-.idea/
-*.iml
-.vscode/
-*.swp
-*.swo
-
-
-.DS_Store
-Thumbs.db
-
-
-logs/
-*.log
-
+# Environment & Logs
 .env
 .env.*
-application.yml
-application-*.yml
-application.properties
-application-*.properties
+*.log
+*.jar
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-!application-example.yml
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
+### OS & Misc ###
+.DS_Store
+Thumbs.db
+build/
 
-*.tmp
-*.bak
-*.cache
-# ── Secret config files ───────────────────────────────
-src/main/resources/application-local.yml
-src/main/resources/application-prod.yml
-src/main/resources/application-dev.yml
-
-# ── Never commit actual secrets ───────────────────────
-*.secret
-*.key
+### VS Code ###
+.vscode/

@@ -1,3 +1,4 @@
+
 package com.fedlearn.medical.service;
 
 import com.fedlearn.medical.dto.response.TrainingLogResponse;

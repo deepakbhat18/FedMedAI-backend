@@ -1,3 +1,4 @@
+
 package com.fedlearn.medical.entity;
 
 import jakarta.persistence.*;

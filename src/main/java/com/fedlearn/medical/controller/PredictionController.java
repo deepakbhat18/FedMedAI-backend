@@ -1,4 +1,6 @@
+
 package com.fedlearn.medical.controller;
+
 import com.fedlearn.medical.dto.request.PredictionRequest;
 import com.fedlearn.medical.dto.response.ApiResponse;
 import com.fedlearn.medical.dto.response.PredictionResponse;
@@ -113,7 +115,6 @@ public class PredictionController {
                     .build();
         }
     }
-
 
     @GetMapping("/patient/{patientId}/timeline")
     @Operation(

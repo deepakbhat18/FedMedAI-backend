@@ -8,7 +8,4 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableAsync
 public class SchedulerConfig {
-    // Enables @Scheduled and @Async annotations
-    // @EnableScheduling → TrainingSchedulerService.scheduledTraining()
-    // @EnableAsync      → for future async email sending
 }

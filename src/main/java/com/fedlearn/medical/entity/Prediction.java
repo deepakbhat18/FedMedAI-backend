@@ -10,7 +10,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Entity
-@Table(name = "predictions")
+@Table(name = "predictions", indexes = {
+        @Index(name = "idx_predictions_patient_created", columnList = "patient_id, created_at"),
+        @Index(name = "idx_predictions_hospital_created", columnList = "hospital_id, created_at"),
+        @Index(name = "idx_predictions_model_version", columnList = "model_version_id")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,6 +49,9 @@ public class Prediction {
     @Type(JsonType.class)
     @Column(name = "features_used", columnDefinition = "jsonb")
     private Map<String, Object> featuresUsed;
+
+    @Version
+    private Long version;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

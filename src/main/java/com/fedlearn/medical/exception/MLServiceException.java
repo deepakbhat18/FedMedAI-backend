@@ -1,3 +1,4 @@
+
 package com.fedlearn.medical.exception;
 
 public class MLServiceException extends RuntimeException {

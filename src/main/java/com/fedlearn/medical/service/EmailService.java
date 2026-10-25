@@ -113,6 +113,7 @@ public class EmailService {
                     "Email encoding error: " + e.getMessage());
         }
     }
+
     private byte[] generatePDF(
             Hospital hospital,
             Patient patient,
@@ -144,6 +145,7 @@ public class EmailService {
             if (request.getFeatures() != null) {
                 payload.put("features", request.getFeatures());
             }
+
             org.springframework.http.HttpHeaders headers =
                     new org.springframework.http.HttpHeaders();
             headers.setContentType(
@@ -168,6 +170,7 @@ public class EmailService {
                     "PDF generation failed: " + e.getMessage());
         }
     }
+
     private void sendEmailFromHospital(
             Hospital hospital,
             Patient patient,
@@ -182,6 +185,7 @@ public class EmailService {
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                 StandardCharsets.UTF_8.name()
         );
+
         try {
             helper.setFrom(new InternetAddress(
                     systemEmail,
@@ -199,7 +203,6 @@ public class EmailService {
             helper.setReplyTo(hospital.getContactEmail());
         }
 
-
         helper.setTo(request.getPatientEmail());
 
         String subject = (request.getSubject() != null
@@ -207,7 +210,6 @@ public class EmailService {
                 ? request.getSubject()
                 : "Your Medical Diagnosis Report - " + hospital.getName();
         helper.setSubject(subject);
-
 
         String patientName = (request.getPatientName() != null
                 && !request.getPatientName().isBlank())
@@ -264,11 +266,9 @@ public class EmailService {
                 "<body style=\"margin:0;padding:0;background:#f0f4f8;" +
                 "font-family:'Segoe UI',Arial,sans-serif;\">" +
 
-
                 "<div style=\"max-width:600px;margin:32px auto;" +
                 "background:#ffffff;border-radius:16px;" +
                 "overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.1);\">" +
-
 
                 "<div style=\"background:linear-gradient(" +
                 "135deg,#1a56db,#7e3af2);padding:36px 40px;" +
@@ -284,9 +284,7 @@ public class EmailService {
                                 "font-size:13px;\">" + hospitalAddress + "</p>") +
                 "</div>" +
 
-
                 "<div style=\"padding:36px 40px;\">" +
-
 
                 "<p style=\"color:#111827;font-size:16px;margin:0 0 8px;" +
                 "font-weight:600;\">Dear " + patientName + ",</p>" +
@@ -299,7 +297,6 @@ public class EmailService {
                 "disease categories along with personalized medical recommendations." +
                 "</p>" +
 
-
                 "<div style=\"background:#f9fafb;border-radius:12px;" +
                 "padding:24px;margin:0 0 24px;" +
                 "border:1px solid #e5e7eb;\">" +
@@ -308,12 +305,10 @@ public class EmailService {
                 "letter-spacing:0.5px;\">Report Details</h3>" +
                 "<table style=\"width:100%;border-collapse:collapse;\">" +
 
-
                 "<tr><td style=\"padding:8px 0;color:#6b7280;" +
                 "font-size:13px;width:45%;\">Patient Code</td>" +
                 "<td style=\"padding:8px 0;color:#111827;font-size:13px;" +
                 "font-weight:600;\">" + patientCode + "</td></tr>" +
-
 
                 "<tr><td style=\"padding:8px 0;color:#6b7280;" +
                 "font-size:13px;\">Hospital</td>" +
@@ -321,19 +316,16 @@ public class EmailService {
                 "font-size:13px;font-weight:600;\">" +
                 hospitalName + "</td></tr>" +
 
-
                 "<tr><td style=\"padding:8px 0;color:#6b7280;" +
                 "font-size:13px;\">Report Date</td>" +
                 "<td style=\"padding:8px 0;color:#111827;" +
                 "font-size:13px;font-weight:600;\">" + date + "</td></tr>" +
-
 
                 "<tr><td style=\"padding:8px 0;color:#6b7280;" +
                 "font-size:13px;\">Diseases Screened</td>" +
                 "<td style=\"padding:8px 0;color:#1a56db;" +
                 "font-size:13px;font-weight:600;\">" +
                 "5 Conditions</td></tr>" +
-
 
                 "<tr><td style=\"padding:8px 0;color:#6b7280;" +
                 "font-size:13px;\">Technology</td>" +
@@ -342,7 +334,6 @@ public class EmailService {
                 "Federated Learning AI</td></tr>" +
 
                 "</table></div>" +
-
 
                 "<div style=\"margin:0 0 28px;\">" +
                 "<p style=\"color:#6b7280;font-size:12px;margin:0 0 12px;\">" +
@@ -380,7 +371,6 @@ public class EmailService {
                 "<li>Contact the hospital if you have any questions</li>" +
                 "</ul></div>" +
 
-
                 "<p style=\"color:#374151;font-size:13px;margin:0 0 4px;\">" +
                 "Best regards,</p>" +
                 "<p style=\"color:#111827;font-size:15px;font-weight:700;" +
@@ -391,10 +381,8 @@ public class EmailService {
                 "</p>" +
                 "</div>" +
 
-
                 "<div style=\"background:#f9fafb;padding:20px 40px;" +
                 "text-align:center;border-top:1px solid #e5e7eb;\">" +
-
 
                 (!hospitalEmail.isBlank() ?
                         "<p style=\"color:#6b7280;font-size:12px;margin:0 0 8px;\">" +

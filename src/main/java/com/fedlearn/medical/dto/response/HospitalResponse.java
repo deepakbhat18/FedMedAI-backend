@@ -1,3 +1,4 @@
+
 package com.fedlearn.medical.dto.response;
 
 import lombok.*;

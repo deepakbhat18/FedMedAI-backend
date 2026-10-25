@@ -1,4 +1,6 @@
+
 package com.fedlearn.medical.controller;
+
 import com.fedlearn.medical.dto.response.ApiResponse;
 import com.fedlearn.medical.dto.response.TrainingLogResponse;
 import com.fedlearn.medical.service.TrainingLogService;

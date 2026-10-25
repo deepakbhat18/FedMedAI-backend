@@ -1,4 +1,3 @@
-
 package com.fedlearn.medical.service;
 
 import com.fedlearn.medical.dto.response.AnalyticsResponse;
@@ -28,13 +27,12 @@ public class AnalyticsService {
     private TrainingLogRepository trainingLogRepository;
 
     public AnalyticsResponse getDashboardAnalytics() {
-
         long totalHospitals = hospitalRepository.count();
         long totalPatients = patientRepository.count();
         long totalPredictions = predictionRepository.count();
 
         List<Integer> rounds = trainingLogRepository.findDistinctTrainingRounds();
-        long totalRounds = rounds.size();
+        long totalRounds = rounds != null ? rounds.size() : 0;
 
         String latestVersion = "None";
         Double latestAccuracy = null;
@@ -67,8 +65,12 @@ public class AnalyticsService {
 
         Map<String, Long> predictionDist = new HashMap<>();
         predictionRepository.countByPredictionGrouped().forEach(row -> {
-            String label = ((Integer) row[0]) == 1 ? "Disease Detected" : "Healthy";
-            predictionDist.put(label, (Long) row[1]);
+            if (row != null && row.length >= 2 && row[0] != null) {
+                int predVal = ((Number) row[0]).intValue();
+                String label = (predVal == 1) ? "Disease Detected" : "Healthy";
+                long countVal = row[1] instanceof Number ? ((Number) row[1]).longValue() : 0L;
+                predictionDist.put(label, countVal);
+            }
         });
 
         return AnalyticsResponse.builder()

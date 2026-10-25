@@ -129,7 +129,6 @@ public class TrainingSchedulerService {
             logger.info("Training with {} active hospitals: {}",
                     activeHospitalIds.size(), activeHospitalIds);
 
-
             TrainingTriggerRequest request = TrainingTriggerRequest.builder()
                     .hospitalIds(activeHospitalIds)
                     .epochs(defaultEpochs)
@@ -140,7 +139,6 @@ public class TrainingSchedulerService {
                     .build();
 
             Map<String, Object> result = modelService.triggerTraining(request);
-
 
             String status = "COMPLETED".equals(result.get("status"))
                     ? "SUCCESS" : "PARTIAL";
@@ -192,14 +190,13 @@ public class TrainingSchedulerService {
         historyEntry.put("duration", java.time.Duration.between(
                 startTime, LocalDateTime.now()).getSeconds() + "s");
 
-        runHistory.add(0, historyEntry); // Add to front
+        runHistory.add(0, historyEntry);
         if (runHistory.size() > 20) {
-            runHistory.remove(runHistory.size() - 1); // Remove oldest
+            runHistory.remove(runHistory.size() - 1);
         }
     }
 
     public Map<String, Object> getStatus() {
-
         Map<String, Object> status = new HashMap<>();
 
         status.put("enabled",           schedulerEnabled);
@@ -207,10 +204,8 @@ public class TrainingSchedulerService {
         status.put("cronExpression",    "${app.scheduler.cron:0 0 2 * * MON}");
         status.put("cronDescription",   "Every Monday at 2:00 AM");
 
-
         status.put("lastRunTime",
                 lastRunTime != null ? lastRunTime.toString() : null);
-
 
         status.put("lastRunStatus",
                 lastRunStatus != null ? lastRunStatus : "NEVER");
@@ -222,11 +217,9 @@ public class TrainingSchedulerService {
         status.put("successfulRuns",     successfulRuns);
         status.put("failedRuns",         failedRuns);
 
-
         status.put("runHistory",
                 runHistory != null ? runHistory
                         : new java.util.ArrayList<>());
-
 
         Map<String, Object> config = new HashMap<>();
         config.put("epochs",       defaultEpochs);

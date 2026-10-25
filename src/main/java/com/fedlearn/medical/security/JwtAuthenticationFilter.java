@@ -1,4 +1,3 @@
-
 package com.fedlearn.medical.security;
 
 import jakarta.servlet.FilterChain;
@@ -34,32 +33,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            String jwt = getJwtFromRequest(request);
+            String jwt = resolveToken(request);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 String username = tokenProvider.getUsernameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request));
+                if (userDetails.isEnabled()) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         } catch (Exception ex) {
-            logger.error("Could not set user authentication: {}", ex.getMessage());
+            logger.error("Could not set user authentication context: {}", ex.getMessage());
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private String getJwtFromRequest(HttpServletRequest request) {
+    private String resolveToken(HttpServletRequest request) {
+        String cookieToken = tokenProvider.getJwtFromCookies(request);
+        if (StringUtils.hasText(cookieToken)) {
+            return cookieToken;
+        }
+
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
+
         return null;
     }
 }

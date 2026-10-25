@@ -5,6 +5,8 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,12 +16,18 @@ import java.util.Map;
 @Entity
 @Table(name = "patients", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"hospital_id", "patient_code"})
+}, indexes = {
+        @Index(name = "idx_patients_hospital_id", columnList = "hospital_id"),
+        @Index(name = "idx_patients_patient_code", columnList = "patient_code"),
+        @Index(name = "idx_patients_created_at", columnList = "created_at")
 })
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@SQLDelete(sql = "UPDATE patients SET is_deleted = true WHERE id = ? AND version = ?")
+@SQLRestriction("is_deleted = false")
 public class Patient {
 
     @Id
@@ -49,6 +57,13 @@ public class Patient {
     @Column(name = "actual_label")
     private Integer actualLabel;
 
+    @Builder.Default
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
+
+    @Version
+    private Long version;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -56,8 +71,4 @@ public class Patient {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-
-
-
 }
