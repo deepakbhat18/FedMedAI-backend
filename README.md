@@ -288,7 +288,7 @@ docker run -d \
 
 ## Project Subsystems & Links
 
-- **Frontend Application:** Refer to [`../fl-medical-frontend/README.md`](../fl-medical-frontend/README.md) for web client setup and component architecture.
-- **Machine Learning Engine:** Refer to [`../ml-service/README.md`](../ml-service/README.md) for Scikit-learn inference, Flower federated training, and OpenRouter integration.
+- **Frontend Application:** Refer to [FedMedAI-frontend](https://github.com/deepakbhat18/FedMedAI-frontend) for web client setup and component architecture.
+- **Machine Learning Engine:** Refer to [FedMedAI-ml-service](https://github.com/deepakbhat18/FedMedAI-ml-service) for Scikit-learn inference, Flower federated training, and OpenRouter integration.
 - **Unified Stack Orchestration:** See [`../docker-compose.yml`](../docker-compose.yml) to deploy the database, backend, frontend, and ML engine simultaneously.
 - **API Documentation:** Interactive Swagger UI is hosted at `http://localhost:8080/swagger-ui.html` when running.
